@@ -1,0 +1,106 @@
+<section class="container" style="font-family: 'Inter', 'Roboto', sans-serif;">
+    <div class="row align-items-center mt-5 mb-5 pb-5 border-bottom">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-4" style="color: #1F1F1F; letter-spacing: -1px;">Static Site Host</h1>
+            <p class="lead mb-4" style="color: #555;">
+                Deploy fully functional static websites directly inside your Odoo environment. Just upload a ZIP containing your HTML, CSS, JS, and assets—and it's instantly live!
+            </p>
+            <span class="badge rounded-pill bg-primary fs-6 px-4 py-2 me-2 mb-2">Odoo 17</span>
+            <span class="badge rounded-pill bg-success fs-6 px-4 py-2 me-2 mb-2">No Server Config</span>
+            <span class="badge rounded-pill bg-dark fs-6 px-4 py-2 mb-2">Instant Deploy</span>
+        </div>
+        <div class="col-lg-6 text-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/1005/1005141.png" alt="Static Site Server" class="img-fluid" style="max-height: 300px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));" />
+        </div>
+    </div>
+
+    <!-- Highlights Section -->
+    <div class="row mt-5 mb-5">
+        <div class="col-12 text-center mb-5">
+            <h2 class="fw-bold" style="color: #1F1F1F;">Why Use Static Site Host?</h2>
+            <p class="text-muted">Perfect for hosting landing pages, React/Vue/Angular bundles, documentation, or marketing campaigns without leaving Odoo.</p>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f8f9fa; border-radius: 12px;">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <i class="fa fa-upload fa-3x" style="color: #3E9B35;"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Simple ZIP Upload</h5>
+                    <p class="card-text text-muted">Upload a ZIP file with your website. The module handles extraction, routing, and file serving automatically.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f8f9fa; border-radius: 12px;">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <i class="fa fa-bolt fa-3x" style="color: #3E9B35;"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Instant Deploy</h5>
+                    <p class="card-text text-muted">Zero web server configuration. Click 'Deploy' and your site is immediately accessible via a clean, customizable URL slug.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f8f9fa; border-radius: 12px;">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <i class="fa fa-folder-tree fa-3x" style="color: #3E9B35;"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Smart Architecture</h5>
+                    <p class="card-text text-muted">Supports nested directories, root folders in ZIPs, and perfectly resolves relative paths for CSS, JS, and image assets.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How it Works -->
+    <div class="row align-items-center mt-5 mb-5 bg-light p-5 rounded-4 shadow-sm" style="border-radius: 16px;">
+        <div class="col-md-6 order-2 order-md-1">
+            <h2 class="fw-bold mb-4" style="color: #1F1F1F;">How to Use</h2>
+            <ol class="list-group list-group-numbered list-group-flush" style="background: transparent;">
+                <li class="list-group-item bg-transparent border-0 d-flex align-items-center mb-3">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold fs-5">Create a New Site</div>
+                        Navigate to the Static Sites menu, create a new record, and assign a unique URL slug (e.g. <code>my-campaign</code>).
+                    </div>
+                </li>
+                <li class="list-group-item bg-transparent border-0 d-flex align-items-center mb-3">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold fs-5">Upload your ZIP</div>
+                        Attach your site's ZIP archive. Make sure it contains an <code>index.html</code> (either at the root or inside a single top-level folder).
+                    </div>
+                </li>
+                <li class="list-group-item bg-transparent border-0 d-flex align-items-center">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold fs-5">Click Deploy</div>
+                        Your site is extracted and goes live immediately at <code>/sites/my-campaign/</code>. You can undeploy or redeploy anytime!
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div class="col-md-6 order-1 order-md-2 text-center mb-4 mb-md-0">
+            <i class="fa fa-cogs fa-5x text-muted opacity-50 mb-3"></i>
+            <h4 class="text-muted">It's really that simple.</h4>
+        </div>
+    </div>
+
+    <!-- Technical Specs -->
+    <div class="row mt-5 mb-5 pb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold" style="color: #1F1F1F;">Technical Details</h2>
+        </div>
+        <div class="col-md-8 offset-md-2">
+            <ul class="list-unstyled">
+                <li class="mb-3"><i class="fa fa-check-circle text-success me-2"></i> <strong>Automatic Entry Point Detection:</strong> Finds your <code>index.html</code> automatically.</li>
+                <li class="mb-3"><i class="fa fa-check-circle text-success me-2"></i> <strong>Asset Caching:</strong> Serves JS/CSS with proper cache headers and HTML with no-cache for seamless updates.</li>
+                <li class="mb-3"><i class="fa fa-check-circle text-success me-2"></i> <strong>Security Built-in:</strong> Validates slugs, prevents directory traversal, and blocks unauthorized ZIP structures.</li>
+                <li class="mb-3"><i class="fa fa-check-circle text-success me-2"></i> <strong>Background Cleanup:</strong> Automatically purges orphaned files if a site record is deleted.</li>
+            </ul>
+        </div>
+    </div>
+</section>

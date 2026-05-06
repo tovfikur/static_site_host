@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top-level app menu -->
+    <menuitem id="menu_static_site_root"
+              name="Static Sites"
+              sequence="90"
+              web_icon="static_site_host,static/description/icon.png"/>
+
+    <!-- Primary menu -->
+    <menuitem id="menu_static_site_main"
+              name="Sites"
+              parent="menu_static_site_root"
+              sequence="10"/>
+
+    <!-- Sites list -->
+    <menuitem id="menu_static_site_list"
+              name="All Sites"
+              parent="menu_static_site_main"
+              action="action_static_site"
+              sequence="10"/>
+
+</odoo>

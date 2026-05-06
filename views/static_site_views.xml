@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================ -->
+    <!-- Form View                                                         -->
+    <!-- ================================================================ -->
+    <record id="view_static_site_form" model="ir.ui.view">
+        <field name="name">static.site.form</field>
+        <field name="model">static.site</field>
+        <field name="arch" type="xml">
+            <form string="Static Site">
+
+                <!-- Status bar -->
+                <header>
+                    <button name="action_deploy"
+                            string="Deploy"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not zip_file"/>
+                    <button name="action_redeploy"
+                            string="Re-deploy"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state != 'deployed'"/>
+                    <button name="action_open_site"
+                            string="Open Site ↗"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state != 'deployed'"/>
+                    <button name="action_undeploy"
+                            string="Undeploy"
+                            type="object"
+                            class="btn-secondary"
+                            confirm="Remove all deployed files for this site?"
+                            invisible="state != 'deployed'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,deployed"/>
+                </header>
+
+                <sheet>
+                    <!-- Error banner -->
+                    <div class="alert alert-danger" role="alert"
+                         invisible="state != 'error'">
+                        <strong>Deployment Error</strong>
+                        <field name="error_message"/>
+                    </div>
+
+                    <!-- Deployed info banner -->
+                    <div class="alert alert-success o_static_site_deployed_banner"
+                         role="alert"
+                         invisible="state != 'deployed'">
+                        <i class="fa fa-check-circle me-2"/>
+                        <strong>Live at: </strong>
+                        <field name="site_url" widget="url" readonly="1"/>
+                        <span class="ms-3 text-muted">
+                            (<field name="file_count" readonly="1"/>
+                            files deployed)
+                        </span>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="My Awesome Site"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Identity">
+                            <field name="slug"
+                                   placeholder="my-site"
+                                   readonly="state == 'deployed'"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Deployment Info"
+                               invisible="state == 'draft'">
+                            <field name="entry_point" readonly="1"/>
+                            <field name="deploy_path" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Upload ZIP Archive">
+                        <field name="zip_file"
+                               filename="zip_filename"
+                               widget="binary"
+                               string="ZIP File"
+                               options="{'accepted_file_extensions': '.zip'}"/>
+                        <field name="zip_filename" invisible="1"/>
+                    </group>
+
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"
+                               placeholder="Optional notes about this site…"/>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- List View                                                         -->
+    <!-- ================================================================ -->
+    <record id="view_static_site_list" model="ir.ui.view">
+        <field name="name">static.site.list</field>
+        <field name="model">static.site</field>
+        <field name="arch" type="xml">
+            <tree string="Static Sites" decoration-success="state == 'deployed'"
+                  decoration-muted="state == 'draft'"
+                  decoration-danger="state == 'error'">
+                <field name="name"/>
+                <field name="slug"/>
+                <field name="site_url" widget="url" string="URL"/>
+                <field name="file_count"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'deployed'"
+                       decoration-warning="state == 'draft'"
+                       decoration-danger="state == 'error'"/>
+                <button name="action_deploy"   string="Deploy"   type="object"
+                        icon="fa-rocket"
+                        invisible="state == 'deployed'"/>
+                <button name="action_open_site" string="Open"   type="object"
+                        icon="fa-external-link"
+                        invisible="state != 'deployed'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- Kanban View                                                       -->
+    <!-- ================================================================ -->
+    <record id="view_static_site_kanban" model="ir.ui.view">
+        <field name="name">static.site.kanban</field>
+        <field name="model">static.site</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_static_site_kanban">
+                <field name="name"/>
+                <field name="slug"/>
+                <field name="state"/>
+                <field name="site_url"/>
+                <field name="file_count"/>
+                <field name="zip_file"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click o_static_site_card">
+                            <!-- State badge -->
+                            <div class="o_static_site_card_top">
+                                <span t-attf-class="badge #{record.state.raw_value == 'deployed' ? 'text-bg-success' : record.state.raw_value == 'error' ? 'text-bg-danger' : 'text-bg-secondary'}">
+                                    <t t-esc="record.state.value"/>
+                                </span>
+                                <span class="text-muted small ms-2" t-if="record.file_count.raw_value">
+                                    <t t-esc="record.file_count.value"/> files
+                                </span>
+                            </div>
+
+                            <div class="o_static_site_card_body">
+                                <h5 class="mb-1">
+                                    <t t-esc="record.name.value"/>
+                                </h5>
+                                <div class="text-muted small">
+                                    /sites/<t t-esc="record.slug.value"/>/
+                                </div>
+                            </div>
+
+                            <div class="o_static_site_card_footer">
+                                <a t-if="record.state.raw_value == 'deployed'"
+                                   t-att-href="record.site_url.value"
+                                   target="_blank"
+                                   class="btn btn-sm btn-outline-primary"
+                                   onclick="event.stopPropagation()">
+                                    Open ↗
+                                </a>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- Search View                                                       -->
+    <!-- ================================================================ -->
+    <record id="view_static_site_search" model="ir.ui.view">
+        <field name="name">static.site.search</field>
+        <field name="model">static.site</field>
+        <field name="arch" type="xml">
+            <search string="Static Sites">
+                <field name="name"/>
+                <field name="slug"/>
+                <filter string="Deployed"  name="deployed" domain="[('state','=','deployed')]"/>
+                <filter string="Draft"     name="draft"    domain="[('state','=','draft')]"/>
+                <filter string="Error"     name="error"    domain="[('state','=','error')]"/>
+                <separator/>
+                <filter string="Archived"  name="archived" domain="[('active','=',False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- Action                                                            -->
+    <!-- ================================================================ -->
+    <record id="action_static_site" model="ir.actions.act_window">
+        <field name="name">Static Sites</field>
+        <field name="res_model">static.site</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_static_site_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No static sites yet — let's deploy one!
+            </p>
+            <p>
+                Click <b>New</b>, upload a ZIP archive containing your
+                <code>index.html</code> and assets, then hit <b>Deploy</b>.
+                Your site will be live at <code>/sites/&lt;slug&gt;/</code>.
+            </p>
+        </field>
+    </record>
+
+</odoo>
