@@ -23,7 +23,7 @@ Tips
 - All relative asset paths (CSS, JS, images) work automatically.
 - Re-upload a new ZIP at any time to update the site.
     """,
-    'author': 'Custom',
+    'author': 'Tovfikur rahman',
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
